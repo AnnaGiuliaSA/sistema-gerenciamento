@@ -1,0 +1,299 @@
+/* Theme-aware surfaces and component aliases. */
+body,
+.main-content {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+}
+
+.topbar {
+    border-color: var(--border-color);
+    background: var(--bg-card);
+}
+
+.breadcrumb,
+.breadcrumb strong,
+.welcome-date,
+.welcome-copy,
+footer {
+    color: var(--text-muted);
+}
+
+.welcome-row h1,
+.welcome-row h1 span {
+    color: var(--text-title);
+}
+
+.panel,
+.metric-card,
+.card,
+.client-card,
+.agenda-order,
+.modal {
+    --navy: var(--text-main);
+    --beige: var(--bg-card);
+    --beige-light: var(--bg-card-raised);
+    --beige-dark: var(--border-color);
+    --ink: var(--text-main);
+    border-color: var(--border-color);
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    transition: background-color .3s ease, color .3s ease, border-color .3s ease;
+}
+
+.client-card,
+.agenda-order {
+    background-color: var(--bg-card-raised);
+}
+
+.metric-peach {
+    background: var(--bg-card);
+}
+
+.panel-heading,
+.compact-panel-heading {
+    background: transparent;
+}
+
+.panel-heading h2,
+.compact-panel-heading h2,
+.card-title,
+.card h2,
+.card h3,
+.client-card h3,
+.agenda-order,
+.agenda-order-heading,
+.metric-card p,
+.metric-card > strong,
+.metric-card > small,
+.panel-subtitle,
+.client-total,
+.client-card-stats,
+.client-card-stats dt,
+.client-card-stats dd,
+.client-card-contact,
+.recent-order-item,
+.recent-order-client,
+.recent-order-name,
+.agenda-step-label,
+.agenda-progress-label,
+.agenda-step-copy strong,
+.agenda-step-copy small,
+.settings-feedback,
+.card-body {
+    color: var(--text-main);
+}
+
+.panel-kicker,
+.card-subtitle,
+.section-tag,
+.card-tag,
+.card-category {
+    color: var(--text-tag);
+}
+
+.metric-icon,
+.icon-blue,
+.icon-green,
+.icon-sage,
+.icon-peach,
+.table-avatar,
+.client-avatar {
+    background: var(--sidebar);
+    color: var(--gold);
+}
+
+.nav-link.is-active .nav-icon {
+    color: var(--gold);
+}
+
+.primary-button {
+    background: var(--primary-color);
+    color: var(--primary-text);
+}
+
+.primary-button span {
+    color: var(--primary-text);
+}
+
+.secondary-button,
+.filter-pill,
+.panel-tools select,
+.settings-language select,
+.field input,
+.field select,
+.global-search,
+.table-search,
+.language-picker {
+    border-color: var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--text-main);
+}
+
+.secondary-button:hover,
+.upcoming-item:hover,
+tbody tr:hover {
+    background-color: var(--row-hover);
+}
+
+.topbar-actions .global-search,
+.topbar-actions .language-picker {
+    border-color: var(--border-color);
+    background: var(--input-bg);
+    color: var(--text-main);
+}
+
+.profile-dropdown {
+    border-color: var(--border-color);
+    background: var(--bg-card);
+    color: var(--text-main);
+}
+
+.profile-dropdown button,
+.profile-dropdown a {
+    color: var(--text-main);
+}
+
+.profile-dropdown button:hover,
+.profile-dropdown a:hover {
+    background: var(--bg-card-raised);
+    color: var(--text-title);
+}
+
+.global-search input,
+.table-search input,
+.language-picker select,
+.settings-language select,
+.field input,
+.field select {
+    color: var(--text-main);
+}
+
+.global-search input::placeholder,
+.table-search input::placeholder {
+    color: var(--text-muted);
+}
+
+thead {
+    background: var(--table-head-bg);
+}
+
+td,
+.table-footer,
+.table-footer button,
+.empty-cell,
+.empty-state,
+.client-lines small,
+.next-step-cell small,
+.upcoming-details small,
+.recent-client-detail small,
+.client-history-item > small,
+.client-history-steps,
+.steps-heading p,
+.timeline-client,
+.timeline-step-body small,
+.timeline-empty,
+.clients-modal-empty,
+.profile-photo-hint {
+    color: var(--text-muted);
+}
+
+.table-footer,
+.panel fieldset,
+.client-history-item,
+.timeline-summary,
+.timeline-list::before {
+    border-color: var(--border-color);
+}
+
+.timeline-summary,
+.step-editor,
+.filter-pill {
+    background-color: var(--bg-card-raised);
+    color: var(--text-main);
+}
+
+.date-block {
+    background: var(--bg-card-raised);
+    color: var(--text-main);
+}
+
+.filter-pill:hover,
+.filter-pill.is-active {
+    border-color: var(--gold);
+    background: var(--sidebar);
+    color: var(--gold);
+}
+
+.modal-heading {
+    border-color: var(--border-color);
+    background: var(--dark-slate);
+}
+
+.modal-heading h2,
+.modal .panel-kicker {
+    color: var(--gold);
+}
+
+.modal legend,
+.modal .field,
+.timeline-step-body strong,
+.clients-modal-list li,
+.reset-warning-copy {
+    color: var(--text-main);
+}
+
+.modal fieldset,
+.field input,
+.field select,
+.step-editor,
+.clients-modal-list li {
+    border-color: var(--border-color);
+}
+
+.modal .field input,
+.modal .field select,
+.step-editor {
+    background: var(--input-bg);
+    color: var(--text-main);
+}
+
+.theme-toggle {
+    color: var(--text-main);
+}
+
+.theme-toggle:hover {
+    background: var(--bg-card-raised);
+    color: var(--text-title);
+}
+
+.theme-toggle svg {
+    width: 18px;
+    height: 18px;
+}
+
+.theme-setting-toggle {
+    justify-self: start;
+}
+
+.theme-setting-toggle svg {
+    width: 16px;
+    height: 16px;
+    color: var(--gold);
+}
+
+.theme-setting-toggle span {
+    color: var(--text-main);
+}
+
+.card,
+.panel,
+.metric-card,
+.client-card,
+.agenda-order,
+button {
+    transition: background-color .3s ease, color .3s ease, border-color .3s ease, transform .18s ease, box-shadow .18s ease;
+}
+
+[hidden] {
+    display: none !important;
+}
