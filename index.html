@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1F2A44">
+    <title>G.Arts | Painel</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="brand" href="#view-painel" aria-label="G.Arts home" data-i18n-aria="brand.home">
+                <span class="brand-mark">G</span><span data-workspace-name>G.Arts</span>
+            </a>
+            <div class="profile-block">
+                <div class="avatar avatar-large" data-profile-avatar>AG</div>
+                <div><strong data-profile-name>Anna Giulia</strong><span data-i18n="profile.role">Administrator</span></div>
+                <span class="profile-menu" aria-hidden="true">···</span>
+            </div>
+            <p class="nav-caption" data-i18n="sidebar.workspace">WORKSPACE</p>
+            <nav class="primary-nav" aria-label="Main navigation" data-i18n-aria="sidebar.navigation">
+                <a class="nav-link is-active" href="#view-painel" data-target="view-painel" aria-current="page"><i class="nav-icon" data-lucide="layout-dashboard" aria-hidden="true"></i><span class="nav-label" data-i18n="nav.dashboard">Dashboard</span></a>
+                <a class="nav-link" href="#view-pedidos" data-target="view-pedidos"><i class="nav-icon" data-lucide="clipboard-list" aria-hidden="true"></i><span class="nav-label" data-i18n="nav.orders">Orders / Services</span></a>
+                <a class="nav-link" href="#view-clientes" data-target="view-clientes"><i class="nav-icon" data-lucide="users" aria-hidden="true"></i><span class="nav-label" data-i18n="nav.clients">Clients</span></a>
+                <a class="nav-link" href="#view-agenda" data-target="view-agenda"><i class="nav-icon" data-lucide="calendar" aria-hidden="true"></i><span class="nav-label" data-i18n="nav.schedule">Schedule</span></a>
+                <a class="nav-link" href="#view-configuracoes" data-target="view-configuracoes"><i class="nav-icon" data-lucide="settings" aria-hidden="true"></i><span class="nav-label" data-i18n="nav.settings">Settings</span></a>
+            </nav>
+            <div class="sidebar-bottom">
+                <div class="sidebar-help"><span class="help-icon" aria-hidden="true">i</span><span><strong data-i18n="sidebar.workspaceInfo">Local workspace</strong><small data-i18n="sidebar.localStorage">Data stays in this browser</small></span></div>
+                <button class="logout-button" id="logout-button" type="button"><span class="nav-icon">↪</span><span data-i18n="sidebar.logout">Log out</span></button>
+                <span class="sidebar-version" data-i18n="sidebar.version">G.ARTS · LOCAL WORKSPACE</span>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-start">
+                    <label class="global-search"><span aria-hidden="true"><i data-lucide="search"></i></span><input id="search-input" type="search" placeholder="Search services, clients..." data-i18n-placeholder="search.global" aria-label="Search services and clients" data-i18n-aria="search.global"><kbd>Ctrl/⌘ K</kbd></label>
+                    <button class="primary-button quick-order-button" id="quick-new-order-button" type="button" aria-label="Quick New Order" data-i18n-aria="actions.quickOrder"><i data-lucide="plus" aria-hidden="true"></i><span data-i18n="actions.quickOrder">Quick New Order</span></button>
+                </div>
+                <div class="topbar-actions">
+                    <button class="icon-button theme-toggle" id="theme-toggle" data-theme-toggle type="button" aria-label="Switch to dark theme" title="Switch to dark theme" aria-pressed="false">
+                        <i data-lucide="sun" data-theme-icon="sun" aria-hidden="true"></i>
+                        <i data-lucide="moon" data-theme-icon="moon" aria-hidden="true" hidden></i>
+                    </button>
+                    <label class="language-picker"><span aria-hidden="true">文</span><select id="lang-selector" aria-label="Select language" data-i18n-aria="language.label"><option value="pt-BR">🇧🇷 Português</option><option value="en">🇺🇸 English</option><option value="es">🇪🇸 Español</option></select></label>
+                    <div class="profile-menu-wrap">
+                        <button class="profile-trigger" id="profile-menu-toggle" type="button" aria-label="Anna Giulia profile menu" aria-expanded="false" aria-haspopup="menu" data-i18n-aria="header.profile">
+                            <span class="avatar avatar-small" data-profile-avatar>AG</span>
+                        </button>
+                        <div class="profile-dropdown" id="profile-dropdown" role="menu" hidden>
+                            <button type="button" role="menuitem" id="open-profile-modal" data-i18n="profile.menu.personal">👤 Dados Pessoais</button>
+                            <a href="#view-configuracoes" role="menuitem" id="profile-settings-link" data-i18n="profile.menu.settings">⚙️ Configurações</a>
+                            <button type="button" role="menuitem" id="profile-logout" data-i18n="profile.menu.logout">🚪 Sair</button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <p class="storage-warning" id="storage-warning" role="alert" data-i18n="storage.unavailable" hidden></p>
+
+            <div class="content-wrap">
+                <section class="page-view active" id="view-painel">
+                <section class="welcome-row" aria-labelledby="welcome-title">
+                    <div><p class="welcome-date" id="welcome-date"></p><h1 id="welcome-title"><span data-i18n="welcome.title">Welcome back, Anna</span> <span class="welcome-spark">✦</span></h1><p class="welcome-copy" data-i18n="welcome.copy">Here’s what’s happening with your services today.</p></div>
+                    <button class="primary-button" id="new-order-button" type="button"><i data-lucide="plus" aria-hidden="true"></i><span data-i18n="actions.newService">New service</span></button>
+                </section>
+
+                <section class="metrics-grid" aria-label="Overview metrics" data-i18n-aria="metrics.label">
+                    <article class="metric-card">
+                        <div class="metric-top"><span class="metric-icon icon-blue"><i data-lucide="clipboard-list" aria-hidden="true"></i></span><span class="metric-trend trend-neutral" data-i18n="metrics.allRecords">All records</span></div>
+                        <p data-i18n="metrics.totalOrders">Total Orders</p><strong id="metric-orders">0</strong><small data-i18n="metrics.savedWorkspace">Saved in this workspace</small>
+                    </article>
+                    <article class="metric-card">
+                        <div class="metric-top"><span class="metric-icon icon-green"><i data-lucide="badge-check" aria-hidden="true"></i></span><span class="metric-trend trend-up" data-i18n="metrics.liveCount">Live count</span></div>
+                        <p data-i18n="metrics.completedServices">Completed Services</p><strong id="metric-completed">0</strong><small data-i18n="metrics.completedCaption">Successfully completed</small>
+                    </article>
+                    <article class="metric-card metric-peach">
+                        <div class="metric-top"><span class="metric-icon icon-peach"><i data-lucide="wallet" aria-hidden="true"></i></span><span class="metric-trend trend-neutral" data-i18n="metrics.currentTotal">Current total</span></div>
+                        <p data-i18n="metrics.revenue">Revenue</p><strong id="metric-revenue">R$ 0,00</strong><small data-i18n="metrics.revenueCaption">Excluding cancelled orders</small>
+                    </article>
+                    <article class="metric-card">
+                        <div class="metric-top"><span class="metric-icon icon-sage"><i data-lucide="list-checks" aria-hidden="true"></i></span><span class="metric-trend trend-neutral" data-i18n="metrics.needsAttention">Needs attention</span></div>
+                        <p data-i18n="metrics.pendingSteps">Pending Steps</p><strong id="metric-pending">0</strong><small data-i18n="metrics.stepsLeft">Steps left to complete</small>
+                    </article>
+                </section>
+
+                <div class="dashboard-widgets">
+                    <section class="panel dashboard-widget">
+                        <div class="compact-panel-heading"><div><p class="panel-kicker" data-i18n="dashboard.activity">ACTIVITY</p><h2 data-i18n="dashboard.recentOrders">Recent orders</h2></div></div>
+                        <div class="recent-orders-list" id="recent-orders-list"></div>
+                    </section>
+                    <section class="panel dashboard-widget">
+                        <div class="compact-panel-heading"><div><p class="panel-kicker" data-i18n="dashboard.deadlines">DEADLINES</p><h2 data-i18n="dashboard.upcomingDeadlines">Upcoming deadlines</h2></div></div>
+                        <div class="deadlines-preview" id="deadlines-preview"></div>
+                    </section>
+                    <section class="panel dashboard-widget revenue-widget">
+                        <div class="compact-panel-heading"><div><p class="panel-kicker" data-i18n="dashboard.insights">INSIGHTS</p><h2 data-i18n="dashboard.revenueOverview">Revenue overview</h2></div></div>
+                        <div class="revenue-chart-wrap"><canvas id="revenueChart" aria-label="Monthly revenue chart" data-i18n-aria="dashboard.revenueChart"></canvas></div>
+                    </section>
+                </div>
+                </section>
+
+                <section class="page-view" id="view-pedidos">
+                <section class="panel orders-panel" id="orders">
+                    <div class="panel-heading">
+                        <div><p class="panel-kicker" data-i18n="orders.kicker">SERVICE MANAGEMENT</p><h2 data-i18n="orders.title">Orders &amp; services</h2><p class="panel-subtitle" data-i18n="orders.subtitle">Keep track of your clients and every scheduled milestone.</p></div>
+                    </div>
+                    <div class="orders-toolbar">
+                        <div class="filter-pills" id="order-filter-pills" role="group" aria-label="Filter orders" data-i18n-aria="orders.filter">
+                            <button class="filter-pill is-active" type="button" data-order-filter="all" data-i18n="filter.all">All</button>
+                            <button class="filter-pill" type="button" data-order-filter="active" data-i18n="filter.active">Pending / In Progress</button>
+                            <button class="filter-pill" type="button" data-order-filter="approval" data-i18n="filter.approval">Awaiting Approval</button>
+                            <button class="filter-pill" type="button" data-order-filter="completed" data-i18n="filter.completed">Completed</button>
+                        </div>
+                        <label class="table-search"><span aria-hidden="true">⌕</span><input id="table-search" type="search" placeholder="Search orders..." data-i18n-placeholder="search.orders" aria-label="Search orders" data-i18n-aria="search.orders"></label>
+                    </div>
+                    <div class="table-scroll">
+                        <table>
+                            <thead><tr><th data-i18n="table.client">CLIENT</th><th data-i18n="table.service">SERVICE</th><th data-i18n="table.value">VALUE</th><th data-i18n="table.nextStep">NEXT SCHEDULED STEP</th><th data-i18n="table.status">STATUS</th><th data-i18n="table.actions">ACTIONS</th></tr></thead>
+                            <tbody id="orders-table-body"></tbody>
+                        </table>
+                    </div>
+                    <div class="table-footer"><span id="orders-count">Showing 0 services</span></div>
+                </section>
+
+                </section>
+
+                <section class="page-view" id="view-agenda">
+                    <section class="panel schedule-panel" id="schedule">
+                        <div class="compact-panel-heading"><div><p class="panel-kicker" data-i18n="schedule.kicker">UP NEXT</p><h2 data-i18n="agenda.timelineTitle">Milestone timeline</h2></div><i class="panel-symbol" data-lucide="calendar-days" aria-hidden="true"></i></div>
+                        <div class="filter-pills agenda-filters" id="agenda-filter-pills" role="group" aria-label="Filter deadlines" data-i18n-aria="agenda.filterLabel">
+                            <button class="filter-pill is-active" type="button" data-agenda-filter="today" data-i18n="agenda.today">Today</button>
+                            <button class="filter-pill" type="button" data-agenda-filter="week" data-i18n="agenda.nextWeek">Next 7 Days</button>
+                            <button class="filter-pill" type="button" data-agenda-filter="overdue" data-i18n="agenda.overdue">Overdue</button>
+                        </div>
+                        <div class="agenda-timeline" id="agenda-timeline"></div>
+                    </section>
+                </section>
+
+                <section class="page-view" id="view-clientes">
+                    <section class="panel clients-panel" id="clients">
+                        <div class="compact-panel-heading"><div><p class="panel-kicker" data-i18n="clients.kicker">YOUR NETWORK</p><h2 data-i18n="clients.title">Clients</h2></div><span class="client-total" id="clients-count">0 clients</span></div>
+                        <div class="client-cards-grid" id="client-cards-grid"></div>
+                    </section>
+                </section>
+
+                <section class="page-view" id="view-configuracoes">
+                    <section class="panel settings-panel">
+                        <div class="panel-heading"><div><p class="panel-kicker" data-i18n="settings.title">Workspace settings</p><h2 data-i18n="settings.branding">Workspace branding</h2><p class="panel-subtitle" data-i18n="settings.copy">Manage your business identity and local data.</p></div></div>
+                        <form class="settings-form" id="workspace-settings-form">
+                            <label class="field"><span data-i18n="settings.workspaceName">Workspace / Business Name</span><input id="workspace-name" type="text" required></label>
+                            <label class="field"><span data-i18n="settings.adminName">Administrator Name</span><input id="workspace-admin-name" type="text" required></label>
+                            <button class="primary-button" type="submit"><i data-lucide="save" aria-hidden="true"></i><span data-i18n="settings.saveBranding">Save branding</span></button>
+                            <p class="settings-feedback" id="settings-feedback" role="status" aria-live="polite"></p>
+                        </form>
+                    </section>
+                    <section class="panel settings-panel">
+                        <div class="panel-heading"><div><p class="panel-kicker" data-i18n="settings.language">LANGUAGE</p><h2 data-i18n="settings.languageTitle">Language preference</h2></div></div>
+                        <label class="field settings-language"><span data-i18n="language.label">Select language</span><select id="settings-language-selector"><option value="pt-BR">Português</option><option value="en">English</option><option value="es">Español</option></select></label>
+                    </section>
+                    <section class="panel settings-panel">
+                        <div class="panel-heading"><div><p class="panel-kicker" data-i18n="settings.appearance">APPEARANCE</p><h2 data-i18n="settings.themeTitle">Color theme</h2><p class="panel-subtitle" data-i18n="settings.themeCopy">Switch between light and dark appearance.</p></div></div>
+                        <div class="settings-actions">
+                            <button class="secondary-button theme-setting-toggle" id="settings-theme-toggle" data-theme-toggle type="button" aria-label="Switch to dark theme" title="Switch to dark theme" aria-pressed="false">
+                                <i data-lucide="sun" data-theme-icon="sun" aria-hidden="true"></i>
+                                <i data-lucide="moon" data-theme-icon="moon" aria-hidden="true" hidden></i>
+                                <span data-theme-toggle-label>Switch to dark theme</span>
+                            </button>
+                        </div>
+                    </section>
+                    <section class="panel settings-panel">
+                        <div class="panel-heading"><div><p class="panel-kicker" data-i18n="settings.data">DATA</p><h2 data-i18n="settings.backupTitle">Backup &amp; storage</h2></div></div>
+                        <div class="settings-actions">
+                            <button class="secondary-button" id="export-data-button" type="button"><i data-lucide="download" aria-hidden="true"></i><span data-i18n="settings.export">Export Data (JSON)</span></button>
+                            <button class="secondary-button" id="import-data-button" type="button"><i data-lucide="upload" aria-hidden="true"></i><span data-i18n="settings.import">Import Data</span></button>
+                            <input id="import-data-file" type="file" accept="application/json,.json" hidden>
+                            <button class="danger-button" id="reset-workspace-button" type="button"><i data-lucide="triangle-alert" aria-hidden="true"></i><span data-i18n="settings.reset">Reset Workspace</span></button>
+                        </div>
+                        <p class="settings-feedback" id="backup-feedback" role="status" aria-live="polite"></p>
+                    </section>
+                </section>
+                <footer><span data-i18n="footer.copyright">© 2026 G.Arts Workspace</span><span data-i18n="footer.saved">All changes are saved automatically</span></footer>
+            </div>
+        </main>
+    </div>
+
+    <dialog class="modal" id="order-modal" aria-labelledby="order-modal-title">
+        <form id="order-form" method="dialog">
+            <div class="modal-heading"><div><p class="panel-kicker" data-i18n="form.kicker">SERVICE DETAILS</p><h2 id="order-modal-title">Create a service</h2></div><button class="icon-button modal-close" type="button" data-close-order aria-label="Close" data-i18n-aria="actions.close">×</button></div>
+            <input id="order-id" type="hidden">
+            <fieldset><legend data-i18n="form.clientContact">Client contact</legend>
+                <div class="field-grid">
+                    <label class="field field-wide"><span data-i18n="form.existingClient">Existing client</span><select id="existing-client"><option value="" data-i18n="form.newClient">Add a new client</option></select></label>
+                    <label class="field"><span data-i18n="form.clientName">Client name</span><input id="client-name" type="text" placeholder="Full name" data-i18n-placeholder="placeholder.clientName" autocomplete="name" required></label>
+                    <label class="field"><span data-i18n="form.phone">Phone / WhatsApp</span><input id="client-phone" type="tel" placeholder="+55 (11) 99999-9999" data-i18n-placeholder="placeholder.phone" autocomplete="tel"></label>
+                    <label class="field field-wide"><span data-i18n="form.email">Email</span><input id="client-email" type="email" placeholder="client@email.com" data-i18n-placeholder="placeholder.email" autocomplete="email"></label>
+                </div>
+            </fieldset>
+            <fieldset><legend data-i18n="form.orderInfo">Order information</legend>
+                <div class="field-grid">
+                    <label class="field field-wide"><span data-i18n="form.description">Service description</span><input id="service-description" type="text" placeholder="Describe the service" data-i18n-placeholder="placeholder.description" required></label>
+                    <label class="field"><span data-i18n="form.value">Total value (R$)</span><input id="service-value" type="number" min="0" step="0.01" placeholder="0.00" data-i18n-placeholder="placeholder.value"></label>
+                    <label class="field"><span data-i18n="form.orderStatus">Order status</span><select id="order-status"><option value="Scheduled" data-i18n="status.scheduled">Scheduled</option><option value="Pending" data-i18n="status.pending">Pending</option><option value="In Progress" data-i18n="status.inProgress">In Progress</option><option value="Awaiting Approval" data-i18n="status.awaitingApproval">Awaiting Approval</option><option value="Completed" data-i18n="status.completed">Completed</option><option value="Cancelled" data-i18n="status.cancelled">Cancelled</option></select></label>
+                </div>
+            </fieldset>
+            <fieldset class="steps-fieldset"><div class="steps-heading"><div><legend data-i18n="form.steps">Scheduled steps</legend><p data-i18n="form.stepsHint">Add milestones with a date and time.</p></div><button class="secondary-button" id="add-step-button" type="button" data-i18n="actions.addStep">＋ Add step</button></div><div id="order-steps" class="order-steps"></div></fieldset>
+            <div class="modal-actions"><button class="secondary-button" type="button" data-close-order data-i18n="actions.cancel">Cancel</button><button class="primary-button" type="submit" data-i18n="actions.save">Save service</button></div>
+        </form>
+    </dialog>
+
+    <dialog class="modal timeline-modal" id="timeline-modal" aria-labelledby="timeline-title">
+        <div class="modal-heading"><div><p class="panel-kicker" data-i18n="timeline.kicker">SERVICE TIMELINE</p><h2 id="timeline-title" data-i18n="timeline.title">Service schedule</h2><p class="timeline-client" id="timeline-client"></p></div><button class="icon-button" id="close-timeline" type="button" aria-label="Close" data-i18n-aria="actions.close">×</button></div>
+        <div class="timeline-summary" id="timeline-summary"></div>
+        <ol class="timeline-list" id="timeline-list"></ol>
+    </dialog>
+
+    <dialog class="modal clients-modal" id="clients-modal" aria-labelledby="clients-modal-title">
+        <div class="modal-heading"><div><p class="panel-kicker" data-i18n="clients.kicker">YOUR NETWORK</p><h2 id="clients-modal-title" data-i18n="clients.historyTitle">Service history</h2><p class="timeline-client" id="client-history-name"></p></div><button class="icon-button" id="close-clients-modal" type="button" aria-label="Close" data-i18n-aria="actions.close">×</button></div>
+        <p class="clients-modal-empty" id="clients-modal-empty" data-i18n="clients.noHistory">No service history for this client yet.</p>
+        <ul class="clients-modal-list client-history-list" id="clients-modal-list" hidden></ul>
+    </dialog>
+
+    <dialog class="modal reset-modal" id="reset-confirmation-modal" aria-labelledby="reset-modal-title">
+        <div class="modal-heading"><div><p class="panel-kicker" data-i18n="settings.warning">WARNING</p><h2 id="reset-modal-title" data-i18n="settings.resetTitle">Reset workspace?</h2></div></div>
+        <p class="reset-warning-copy" data-i18n="settings.resetWarning">This permanently removes workspace orders, clients and branding stored in this browser.</p>
+        <div class="modal-actions reset-modal-actions">
+            <button class="secondary-button" id="cancel-reset-button" type="button" data-i18n="actions.cancel">Cancel</button>
+            <button class="danger-button" id="confirm-reset-button" type="button" data-i18n="settings.confirmReset">Reset everything</button>
+        </div>
+    </dialog>
+
+    <dialog class="modal reset-modal" id="delete-confirmation-modal" aria-labelledby="delete-modal-title">
+        <div class="modal-heading"><div><p class="panel-kicker" data-i18n="settings.warning">WARNING</p><h2 id="delete-modal-title" data-i18n="orders.deleteTitle">Delete this order?</h2></div></div>
+        <p class="reset-warning-copy" data-i18n="confirm.delete">Delete this service and its scheduled steps?</p>
+        <div class="modal-actions reset-modal-actions">
+            <button class="secondary-button" id="cancel-delete-button" type="button" data-i18n="actions.cancel">Cancel</button>
+            <button class="danger-button" id="confirm-delete-button" type="button" data-i18n="actions.delete">Delete service</button>
+        </div>
+    </dialog>
+
+    <dialog class="modal profile-modal" id="profile-modal" aria-labelledby="profile-modal-title">
+        <form id="profile-form" method="dialog">
+            <div class="modal-heading"><div><p class="panel-kicker" data-i18n="profile.modal.kicker">PERSONAL PROFILE</p><h2 id="profile-modal-title" data-i18n="profile.modal.title">Dados Pessoais</h2></div><button class="icon-button" id="close-profile-modal" type="button" aria-label="Close" data-i18n-aria="actions.close">×</button></div>
+            <label class="field"><span data-i18n="form.clientName">Client name</span><input id="profile-name" type="text" autocomplete="name" required></label>
+            <label class="field"><span data-i18n="form.email">Email</span><input id="profile-email" type="email" autocomplete="email"></label>
+            <label class="field"><span data-i18n="profile.modal.photo">Profile photo URL</span><input id="profile-photo" type="url" placeholder="https://example.com/photo.jpg" data-i18n-placeholder="profile.modal.photoPlaceholder"></label>
+            <p class="profile-photo-hint" data-i18n="profile.modal.photoHint">Choose an image, or leave it empty to use your initials.</p>
+            <div class="modal-actions"><button class="secondary-button" id="cancel-profile-modal" type="button" data-i18n="actions.cancel">Cancel</button><button class="primary-button" type="submit" data-i18n="profile.modal.save">Save profile</button></div>
+        </form>
+    </dialog>
+
+    <template id="step-template">
+        <div class="step-editor">
+            <label class="field step-name-field"><span data-i18n="form.milestone">Milestone</span><input class="step-name" type="text" placeholder="e.g. Initial consultation" data-i18n-placeholder="placeholder.milestone" required></label>
+            <label class="field"><span data-i18n="form.dateTime">Date &amp; time</span><input class="step-date" type="datetime-local" required></label>
+            <label class="field"><span data-i18n="form.stepStatus">Status</span><select class="step-status"><option value="Pending" data-i18n="status.pending">Pending</option><option value="In Progress" data-i18n="status.inProgress">In Progress</option><option value="Completed" data-i18n="status.completed">Completed</option></select></label>
+            <button class="remove-step" type="button" aria-label="Remove step" title="Remove step" data-i18n-aria="actions.removeStep" data-i18n-title="actions.removeStep">×</button>
+        </div>
+    </template>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
